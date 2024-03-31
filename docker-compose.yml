@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+
+  fastapi:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./app:/app
+    depends_on:
+      - redis
+    
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=my-password
+      - REDIS_PORT=6379
+    volumes: 
+      - redis:/data
+volumes:
+  redis:
+    driver: local
